@@ -1,0 +1,431 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Montserrat:wght@400;700&display=swap');
+
+:root {
+    --color-rosa-fondo: #fcdbf6;
+    --color-morado-boton: #d926d5;
+    --fuente-principal: 'Fredoka', cursive;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    font-family: var(--fuente-principal);
+    padding-top: 0;
+}
+
+/* =========================================
+   1. NAVBAR & MENÚ
+   ========================================= */
+.navbar-custom {
+    background: linear-gradient(90deg, #e040e0 0%, #7b1fa2 100%);
+    box-shadow: 0 4px 20px rgba(123, 31, 162, 0.4);
+    padding: 10px 0;
+}
+
+.brand-text {
+    font-family: 'Fredoka', cursive;
+    color: #ffffff !important;
+    font-size: 1.8rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    font-weight: 700;
+}
+
+.nav-link-custom {
+    color: rgba(255,255,255,0.9) !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0 10px;
+    transition: all 0.3s;
+}
+
+.nav-link-custom:hover {
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Buscador Estilo Burbuja */
+.search-input {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50px 0 0 50px !important;
+    color: white;
+    padding-left: 20px;
+}
+
+.search-input::placeholder { color: rgba(255, 255, 255, 0.7); }
+
+.search-input:focus {
+    background-color: rgba(255, 255, 255, 1);
+    color: #6a1b9a;
+    border-color: white;
+    box-shadow: none;
+}
+
+.btn-search {
+    background-color: #ffffff;
+    color: #d926d5;
+    border-radius: 0 50px 50px 0 !important;
+    border: none;
+    padding: 0 20px;
+    font-size: 1.2rem;
+    transition: background 0.3s;
+}
+
+.btn-search:hover {
+    background-color: #f3e5f5;
+    color: #aa00ff;
+}
+
+/* Lista de Sugerencias Flotante */
+#lista-sugerencias {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+    border: 1px solid #fce4ec;
+}
+
+.item-sugerencia {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.item-sugerencia:hover { background-color: #fce4ec; }
+
+.item-sugerencia img {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.item-sugerencia strong { color: #6a1b9a; display: block; }
+.item-sugerencia small { color: #888; }
+
+
+/* =========================================
+   2. HEADER PARALLAX & BANNER (PC Base)
+   ========================================= */
+.parallax-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    background-image: url('../img/fondo.webp');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 60px; 
+}
+
+/* Cerdito Gigante PC */
+.banner-logo {
+    width: 160%;
+    max-width: unset;
+    margin-left: -30%;
+    margin-top: 140px;
+    height: auto;
+    filter: drop-shadow(0 20px 50px rgba(0,0,0,0.4));
+    will-change: transform;
+    position: relative;
+    z-index: 1;
+}
+
+/* Mancha de fondo */
+.blob-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+    z-index: -1;
+    border-radius: 50%;
+}
+
+/* Overlay Colorido */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(140, 60, 180, 0.5) 0%, rgba(220,182,252,0.1) 100%);
+}
+
+/* =========================================
+   3. CONTENIDO PRINCIPAL (Cortina Rosa)
+   ========================================= */
+.content-wrapper {
+    position: relative;
+    z-index: 2;
+    margin-top: 100vh;
+    background-color: var(--color-rosa-fondo);
+    min-height: 100vh;
+    box-shadow: 0 -30px 60px rgba(0,0,0,0.2);
+}
+
+/* Tipografía y Botones Generales */
+h1, h2, h3, h4, h5, .btn {
+    font-family: var(--fuente-principal);
+    font-weight: 700;
+}
+
+.text-shadow { text-shadow: 2px 2px 5px rgba(0,0,0,0.2); }
+
+.btn-custom {
+    background: linear-gradient(45deg, #e040e0, #b01eb0); 
+    color: white;
+    border: 3px solid white;
+    border-radius: 50px;
+    padding: 15px 45px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 10px 20px rgba(180, 30, 180, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+
+.btn-custom:hover {
+    background: linear-gradient(45deg, #ff66ff, #d926d5);
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 20px 30px rgba(217, 38, 213, 0.6);
+    border-color: #fff; 
+    color: #fff;
+}
+
+.btn-custom:active {
+    transform: scale(0.95);
+    box-shadow: 0 5px 10px rgba(180, 30, 180, 0.4);
+}
+
+/* =========================================
+   4. CATEGORÍAS (Botones Pastilla)
+   ========================================= */
+#contenedor-categorias {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.btn-categoria {
+    flex: 0 0 calc(33.333% - 15px); 
+    background-color: #d926d5;
+    color: white !important;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 10px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 55px;
+    box-shadow: 0 4px 10px rgba(217, 38, 213, 0.3);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.btn-categoria:hover {
+    transform: translateY(-3px);
+    background-color: #b01eb0;
+    box-shadow: 0 6px 15px rgba(217, 38, 213, 0.5);
+}
+
+.titulo-categorias {
+    color: #b01eb0;
+    text-transform: uppercase;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0 #fff;
+}
+
+/* =========================================
+   5. GALERÍA DE TAMAÑOS
+   ========================================= */
+.card-marco {
+    background-color: white;
+    border: 4px solid #ce93d8;
+    border-radius: 25px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.card-marco:hover {
+    transform: translateY(-10px) rotate(1deg);
+    box-shadow: 0 15px 30px rgba(200, 100, 200, 0.3);
+    border-color: #d926d5;
+}
+
+.titulo-galeria {
+    color: #d926d5;
+    font-size: 3rem;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0px white, 4px 4px 0px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+/* =========================================
+   6. FOOTER & ANIMACIONES
+   ========================================= */
+.footer-custom {
+    background-color: #6a1b9a;
+    color: white;
+    border-top: 5px solid #d926d5;
+    margin-top: 50px;
+}
+
+.social-icon {
+    color: white;
+    font-size: 1.8rem;
+    margin: 0 15px;
+    transition: transform 0.3s ease, color 0.3s ease;
+    display: inline-block;
+}
+
+.social-icon:hover {
+    color: #fcdbf6;
+    transform: scale(1.2) rotate(10deg);
+}
+
+@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-up { animation: fadeUp 1s ease-out forwards; }
+.delay-1 { animation-delay: 0.3s; opacity: 0; }
+
+
+/* =========================================================
+   7. MEDIA QUERIES (OPTIMIZACIÓN ORDENADA)
+   ========================================================= */
+
+/* --- A. NAVBAR EN MÓVIL (Muy pequeño) --- */
+@media (max-width: 576px) {
+    .navbar-custom .container {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    .navbar-brand { margin-right: 0; }
+    .navbar-custom form { margin-left: 0 !important; max-width: 100% !important; }
+    body { padding-top: 110px; }
+    .parallax-section { padding-top: 110px; }
+}
+
+/* --- B. SOLO CELULARES (Pantallas < 768px) --- 
+   Diseño Apilado (Texto arriba, Cerdito abajo) */
+@media (max-width: 767px) {
+    .navbar-collapse {
+        background-color: #7b1fa2;
+        padding: 20px;
+        border-radius: 0 0 20px 20px;
+        margin-top: 10px;
+    }
+
+    .parallax-section {
+        height: auto;
+        min-height: 100vh;
+        padding-top: 100px;
+        padding-bottom: 50px;
+        text-align: center;
+    }
+
+    .banner-logo {
+        width: 90% !important;
+        max-width: 350px;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 30px !important;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+    }
+
+    .parallax-section h1 { font-size: 2.5rem !important; }
+    .parallax-section h5 { font-size: 1rem !important; margin-top: 20px; }
+    .btn-custom { width: 80%; padding: 15px 0; }
+
+    /* Ajustes visuales extra */
+    .logo-hero { max-width: 320px; }
+    .blob-bg { width: 340px; height: 340px; }
+    .titulo-categorias { font-size: 1.5rem; }
+    
+    /* Botones Categoría (2 columnas) */
+    .btn-categoria {
+        flex: 0 0 calc(50% - 15px); 
+        font-size: 0.8rem;
+    }
+}
+
+/* --- C. TABLETS (iPad / Android Mediano) --- 
+   Diseño LADO A LADO: Texto Izq, Cerdito Der */
+@media (min-width: 768px) and (max-width: 991px) {
+    .navbar-collapse {
+        background-color: #7b1fa2;
+        padding: 20px;
+        border-radius: 0 0 20px 20px;
+        margin-top: 10px;
+    }
+
+    .parallax-section {
+        text-align: left;
+        padding-top: 80px;
+    }
+
+    .banner-logo {
+        width: 140%;        
+        margin-left: -20%; 
+        margin-top: 40px;
+        max-width: unset;
+    }
+
+    .parallax-section h1 { font-size: 3rem; }
+    
+    .btn-custom {
+        width: auto; 
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+}
+
+/* --- D. LAPTOPS PEQUEÑAS (Ajuste Banner) --- */
+@media (min-width: 992px) and (max-width: 1300px) {
+    .banner-logo {
+        width: 130%; 
+        margin-left: -15%;
+    }
+}
