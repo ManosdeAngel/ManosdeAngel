@@ -1,0 +1,23 @@
+{
+  "name": "Manos de Ángel",
+  "short_name": "Manos de Ángel",
+  "description": "Catálogo interactivo de alcancías personalizadas",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fce4ec",
+  "theme_color": "#d926d5",
+  "orientation": "portrait",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "img/logo-manos192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/logo-manos512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

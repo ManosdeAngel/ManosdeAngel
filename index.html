@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manos de Ángel</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#d926d5">
+    <link rel="icon" type="image/png" href="img/logo-manos512.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar fixed-top navbar-custom navbar-dark">
+        <div class="container d-flex justify-content-between align-items-center">            
+            <a class="navbar-brand brand-text" href="index.html">
+                Manos de Ángel
+            </a>
+            <form class="d-flex w-100 ms-3 contenedor-buscador" style="max-width: 400px;" id="form-buscador">
+                <div class="input-group">
+                    <input class="form-control search-input" 
+                        type="search" 
+                        placeholder="Busca tu personaje..." 
+                        id="input-buscador" 
+                        autocomplete="off"> <button class="btn btn-search" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                <div id="lista-sugerencias"></div>
+            </form>
+        </div>
+    </nav>
+    <header class="parallax-section">
+        <div class="overlay"></div>
+        <div class="container" style="position: relative; z-index: 2;">
+            <div class="row align-items-center h-100">                
+                <div class="col-12 col-md-5 col-lg-5 text-center text-md-start pt-5 pt-lg-0">
+                    <h5 class="text-white text-uppercase fw-bold mb-3 animate-fade-up">
+                        Catálogo Manos de Ángel
+                    </h5>
+                    <h1 class="display-3 text-white fw-bold mb-4 text-shadow animate-fade-up">
+                        ¿Listo/a para <br>
+                        ahorrar con estilo?
+                    </h1>
+                    <div class="animate-fade-up delay-1 mt-4">
+                        <a href="#contacto" class="btn btn-custom rounded-pill px-5 py-3 fw-bold shadow-lg">
+                            CONTÁCTAME
+                        </a>
+                    </div>
+                </div>
+                <div class="col-12 col-md-7 col-lg-7 text-center mt-0 mt-lg-0 position-relative">
+                    <div class="blob-bg"></div>
+                    <img src="img/logo-manos.webp" alt="Cerdito Manos de Ángel" class="img-fluid banner-logo" id="logo-cerdito">
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="content-wrapper">
+        <section class="py-5">
+            <div class="container text-center">
+                <h3 class="mb-5 fw-bold" style="color: #d926d5; font-family: 'Fredoka'; font-size: 2rem;">
+                    VISITA NUESTROS DISEÑOS EN LAS SIGUIENTES SECCIONES:
+                </h3>     
+                <div id="contenedor-categorias"></div>
+            </div>
+        </section>
+        <section id="galeria-tamanos" class="py-5">
+            <div class="container">              
+                <div class="row text-center mb-4">
+                    <div class="col-12">
+                        <h2 class="titulo-galeria">Tamaños Disponibles</h2>
+                    </div>
+                </div>
+                <div class="row g-4 justify-content-center">                    
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card-marco">
+                            <img src="img/1.webp" class="img-fluid rounded-3" alt="Tamaño Chico">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card-marco">
+                            <img src="img/2.webp" class="img-fluid rounded-3" alt="Tamaño Mediano">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card-marco">
+                            <img src="img/3.webp" class="img-fluid rounded-3" alt="Tamaño Grande">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card-marco">
+                            <img src="img/4.webp" class="img-fluid rounded-3" alt="Modelo Jumbo">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card-marco">
+                            <img src="img/5.webp" class="img-fluid rounded-3" alt="Edición Especial">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card-marco">
+                            <img src="img/6.webp" class="img-fluid rounded-3" alt="Personalizado">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card-marco">
+                            <img src="img/7.webp" class="img-fluid rounded-3" alt="Sin Asa">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card-marco">
+                            <img src="img/8.webp" class="img-fluid rounded-3" alt="Con Asa">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card-marco">
+                            <img src="img/9.webp" class="img-fluid rounded-3" alt="Pack Ahorro">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="footer-custom py-4 text-center">
+            <div class="container">
+                <p class="mb-0 text-white fw-bold">
+                    &copy; 2025 Manos de Ángel
+                </p>
+                <small class="text-white-50" style="font-size: 0.8rem;">
+                    Diseñado con cariño para tus ahorros.
+                </small>
+            </div>
+        </footer>
+    </main>
+    <button id="pwa-install-btn" class="btn btn-light rounded-circle shadow-lg d-none" 
+            style="position: fixed; bottom: 20px; left: 20px; width: 60px; height: 60px; z-index: 9999; border: 3px solid #d926d5; color: #d926d5;">
+        <i class="bi bi-download" style="font-size: 1.5rem;"></i>
+    </button>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/pwa.js"></script>
+    <script>
+        window.addEventListener('scroll', function() {
+            const logo = document.getElementById('logo-cerdito');
+            if (logo) {
+                const scrollY = window.scrollY;
+                logo.style.transform = `translateY(-${scrollY * 0.4}px)`;
+            }
+        });
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNiUdX80_2hRH_EHOsVxiZqFeP2PYXVGY",
+            authDomain: "manos-de-angel-1c692.firebaseapp.com",
+            projectId: "manos-de-angel-1c692",
+            storageBucket: "manos-de-angel-1c692.firebasestorage.app",
+            messagingSenderId: "102505109232",
+            appId: "1:102505109232:web:9c2af7b8845140d8ad9435",
+            measurementId: "G-LHZ40QXQ2N"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        enableIndexedDbPersistence(db).catch((err) => {
+            if (err.code == 'failed-precondition') {
+                console.log('Múltiples pestañas abiertas, persistencia solo en una.');
+            } else if (err.code == 'unimplemented') {
+                console.log('El navegador no soporta persistencia offline.');
+            }
+        });
+
+        let todosLosProductos = [];
+        const contenedorGrid = document.getElementById('contenedor-productos');
+        const inputBuscador = document.getElementById('input-buscador');     
+        const formBuscador = document.getElementById('form-buscador');         
+        const listaSugerencias = document.getElementById('lista-sugerencias');  
+        const msgSinResultados = document.getElementById('sin-resultados');     
+
+        async function cargarCatalogo() {
+            try {
+                const q = query(collection(db, "productos"), orderBy("fecha", "desc"));
+                const snapshot = await getDocs(q);
+                todosLosProductos = [];
+                snapshot.forEach(doc => {
+                    todosLosProductos.push({ id: doc.id, ...doc.data() });
+                });
+
+                mostrarProductosEnGrid(todosLosProductos);
+                
+                generarBotonesCategorias();
+
+            } catch (error) {
+                console.error("Error cargando productos:", error);
+            }
+        }
+
+        function mostrarProductosEnGrid(lista) {
+            if (!contenedorGrid) return;
+            
+            contenedorGrid.innerHTML = "";
+            
+            if (lista.length === 0) {
+                if(msgSinResultados) msgSinResultados.classList.remove('d-none');
+                return;
+            } else {
+                if(msgSinResultados) msgSinResultados.classList.add('d-none');
+            }
+
+            lista.forEach(prod => {
+                const card = document.createElement('div');
+                card.className = "col-6 col-md-4 col-lg-3"; 
+                
+                const link = `carrusel.html?categoria=${encodeURIComponent(prod.categoria)}&producto=${encodeURIComponent(prod.nombre)}`;
+
+                card.innerHTML = `
+                    <div class="card h-100 shadow-sm border-0" style="border-radius: 15px; overflow: hidden; transition: transform 0.3s;">
+                        <div style="height: 250px; overflow: hidden; position: relative;">
+                            <img src="${prod.imagenPrincipal}" class="card-img-top h-100 w-100" style="object-fit: cover;" alt="${prod.nombre}">
+                        </div>
+                        <div class="card-body text-center" style="background: white;">
+                            <h5 class="card-title fw-bold" style="color: #6a1b9a; font-family: 'Fredoka';">${prod.nombre}</h5>
+                            <p class="card-text text-muted small">${prod.categoria}</p>
+                            <a href="${link}" class="btn btn-sm btn-outline-danger rounded-pill px-3">Ver Detalles</a>
+                        </div>
+                    </div>
+                `;
+                const cardInner = card.querySelector('.card');
+                cardInner.onmouseover = () => cardInner.style.transform = 'translateY(-5px)';
+                cardInner.onmouseout = () => cardInner.style.transform = 'translateY(0)';
+
+                contenedorGrid.appendChild(card);
+            });
+        }
+
+        if (inputBuscador) {
+            inputBuscador.addEventListener('input', (e) => {
+                const texto = e.target.value.toLowerCase();
+                
+                const filtrados = todosLosProductos.filter(p => 
+                    p.nombre.toLowerCase().includes(texto) || 
+                    p.categoria.toLowerCase().includes(texto)
+                );
+
+                mostrarProductosEnGrid(filtrados);
+
+                mostrarSugerencias(filtrados, texto);
+            });
+            
+            inputBuscador.addEventListener('focus', () => {
+                if(inputBuscador.value.trim().length > 0) {
+                    listaSugerencias.style.display = 'block';
+                }
+            });
+        }
+
+        function mostrarSugerencias(lista, texto) {
+            if (!listaSugerencias) return;
+
+            listaSugerencias.innerHTML = "";
+            if (texto.length === 0 || lista.length === 0) {
+                listaSugerencias.style.display = 'none';
+                return;
+            }
+
+            listaSugerencias.style.display = 'block';
+            
+            const top5 = lista.slice(0, 5);
+
+            top5.forEach(prod => {
+                const item = document.createElement('div');
+                item.className = 'item-sugerencia';
+                const link = `carrusel.html?categoria=${encodeURIComponent(prod.categoria)}&producto=${encodeURIComponent(prod.nombre)}`;
+                
+                item.innerHTML = `
+                    <img src="${prod.imagenPrincipal}" alt="img">
+                    <div>
+                        <strong>${prod.nombre}</strong>
+                        <small>${prod.categoria}</small>
+                    </div>
+                `;
+                
+                item.addEventListener('click', () => {
+                    window.location.href = link;
+                });
+
+                listaSugerencias.appendChild(item);
+            });
+        }
+
+        if (formBuscador) {
+            formBuscador.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const texto = inputBuscador.value.trim().toLowerCase();
+                if (texto === "") return;
+
+                const exacto = todosLosProductos.find(p => p.nombre.toLowerCase() === texto);
+
+                if (exacto) {
+                    window.location.href = `carrusel.html?categoria=${encodeURIComponent(exacto.categoria)}&producto=${encodeURIComponent(exacto.nombre)}`;
+                } else {
+                    const catalogoSection = document.getElementById('catalogo');
+                    if(catalogoSection) {
+                        catalogoSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+                
+                if(listaSugerencias) listaSugerencias.style.display = 'none';
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (formBuscador && !formBuscador.contains(e.target)) {
+                if(listaSugerencias) listaSugerencias.style.display = 'none';
+            }
+        });
+
+        function generarBotonesCategorias() {
+            const contenedorCat = document.getElementById('contenedor-categorias');
+            if (!contenedorCat) return;
+            if (contenedorCat.children.length > 1) return;
+
+            const categorias = [
+                "Caricaturas", "Mascotas", "Lunetas", "Superhéroes", "Fútbol", 
+                "Tamaños", "Princesas", "Halloween", "Unicornio", "Anime", 
+                "Navidad", "Especiales", "Dinosaurios", "Oficios Profesiones", "Disfraces", 
+                "Animales", "Novios", "Ceremonia", "Graduación", "Publicidad", 
+                "Centros", "Fantasía", "Metas", "Bautizo", "Comunión", "XV Años", 
+                "Deportes", "Música", "Retro" 
+            ];
+
+            contenedorCat.innerHTML = ""; 
+            
+            categorias.sort().forEach(cat => {
+                const link = `carrusel.html?categoria=${encodeURIComponent(cat)}`;
+                const btn = document.createElement('a');
+                btn.href = link;
+                btn.className = "btn btn-categoria";
+                btn.innerText = cat;
+                contenedorCat.appendChild(btn);
+            });
+        }
+
+        cargarCatalogo();
+    </script>
+</body>
+</html>
+
+

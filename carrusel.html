@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#d926d5">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #fce4ec;
+            font-family: 'Fredoka', cursive;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .titulo-categoria {
+            color: #d926d5;
+            font-size: 4rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 10px;
+            z-index: 20;
+            text-shadow: 4px 4px 0px #fff;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .blob-bg {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.5;
+            transition: all 3s ease-in-out;
+            pointer-events: none;
+        }
+        .blob-grande { width: 900px; }
+        .blob-mediano { width: 600px; }
+
+        .swiper {
+            width: 100%;
+            height: 65vh; 
+            margin-top: 10px;
+            overflow: visible !important;
+        }
+
+        .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            opacity: 0; 
+            transition: opacity 0.4s;
+        }
+
+        .swiper-slide-active { opacity: 1; }
+
+        .slide-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 1000px;
+        }
+
+        .img-interactive {
+            object-fit: contain;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+        }
+
+        .img-main {
+            position: relative;
+            height: 480px;
+            width: auto;
+            max-width: 450px;
+            z-index: 10;
+        }
+
+        .img-side {
+            position: absolute;
+            height: 320px;
+            width: auto;
+            max-width: 280px;
+            z-index: 5; 
+            opacity: 0.9;
+        }
+
+        .img-side.left {
+            left: 15%; 
+            transform: perspective(800px) rotateY(30deg) scale(0.9);
+        }
+
+        .img-side.right {
+            right: 15%; 
+            transform: perspective(800px) rotateY(-30deg) scale(0.9);
+        }
+
+        .img-side.left.focused, .img-side.right.focused {
+            z-index: 50 !important;
+            transform: perspective(800px) rotateY(0deg) scale(1.4) !important;
+            filter: drop-shadow(0 30px 50px rgba(0,0,0,0.5));
+        }
+
+        .img-main.dimmed {
+            transform: scale(0.9);
+            opacity: 0.4;
+            filter: blur(3px);
+            z-index: 1;
+        }
+
+        .producto-info {
+            text-align: center;
+            z-index: 20;
+            height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .producto-nombre {
+            color: #d926d5;
+            font-size: 3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px white;
+            margin: 0;
+        }
+
+        .swiper-button-next, .swiper-button-prev {
+            position: fixed !important; 
+            top: 50% !important;
+            transform: translateY(-50%);
+            width: 70px !important;
+            height: 70px !important;
+            background: #fff;
+            border-radius: 50%;
+            border: 3px solid #d926d5;
+            color: #d926d5 !important;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 9999 !important;
+        }
+        
+        .swiper-button-prev { left: 20px !important; }
+        .swiper-button-next { right: 20px !important; }
+
+        .swiper-button-next::after, .swiper-button-prev::after { font-size: 2rem; font-weight: 800; }
+
+        .btn-regresar { 
+            position: absolute; top: 30px; left: 30px; z-index: 100; 
+        }
+
+        @media (max-width: 768px) {
+            .titulo-categoria { font-size: 2.5rem; margin-top: 50px; }
+            .img-main { height: 280px; }
+            .img-side { height: 180px; }
+            .img-side.left { left: 5%; } 
+            .img-side.right { right: 5%; }
+            .swiper-button-next, .swiper-button-prev { width: 50px !important; height: 50px !important; }
+        }
+
+        @media (max-width: 1024px) {
+
+            body, html {
+                height: 100%;
+                overflow: hidden;
+                position: fixed;
+                width: 100%;
+            }
+
+            .titulo-categoria {
+                font-size: 2.2rem;
+                margin-top: 110px; 
+                margin-bottom: 10px;
+            }
+
+            .swiper {
+                height: 60vh;
+                min-height: 350px;
+                margin-top: 0;
+                overflow: visible !important;
+            }
+
+            .img-main {
+                height: 260px;
+                width: auto;
+                max-width: 65vw;
+                object-fit: contain;
+                position: relative;
+                top: 20px;
+            }
+
+            .img-side {
+                position: absolute !important; 
+                top: 50% !important;
+                margin-top: 0 !important;
+                height: 140px;
+                width: auto;
+                z-index: 5;
+            }
+
+            .img-side.left { 
+                left: 25px !important; 
+                transform: translateY(-50%) perspective(400px) rotateY(20deg) scale(0.85);
+            }
+            
+            .img-side.right { 
+                right: 25px !important; 
+                transform: translateY(-50%) perspective(400px) rotateY(-20deg) scale(0.85);
+            }
+
+            .img-side.left.focused, .img-side.right.focused {
+                z-index: 100 !important;
+                left: 50% !important;
+                right: auto !important;
+                top: 50% !important;
+                transform: translate(-50%, -50%) scale(1.5) !important;
+                max-width: 85vw;
+            }
+
+            .producto-info {
+                position: absolute;
+                bottom: 8%;
+                width: 100%;
+                z-index: 50;
+            }
+            
+            .producto-nombre {
+                font-size: 1.8rem;
+            }
+
+            .swiper-button-next, .swiper-button-prev {
+                width: 45px !important;
+                height: 45px !important;
+                bottom: 18% !important; 
+                top: auto !important;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1024px) {
+
+            /* 1. ALTURA DEL CARRUSEL */
+            .swiper {
+                height: 65vh; 
+                min-height: 450px;
+                margin-top: 20px;
+            }
+
+            /* 2. TÍTULO */
+            .titulo-categoria {
+                font-size: 3rem; 
+                margin-top: 90px; /* Un poco más arriba para dar espacio a la foto */
+            }
+
+            /* 3. IMAGEN CENTRAL (Subida y Ajustada) */
+            .img-main {
+                /* Reducimos un pelín la altura máxima para que no choque con el texto */
+                height: 380px;      
+                width: auto;
+                max-width: 55vw;   
+                
+                /* LA CLAVE: La subimos visualmente con 'top' negativo */
+                position: relative;
+                top: -30px; 
+            }
+
+            /* 4. IMÁGENES LATERALES (Más grandes y presentes) */
+            .img-side {
+                height: 220px;  /* Crecieron de 180px a 220px */
+                width: auto;
+                max-width: 200px;
+            }
+
+            /* Las acercamos un poco más al centro (del 5% al 8%) */
+            .img-side.left { left: 13% !important; }
+            .img-side.right { right: 13% !important; }
+
+            /* 5. FLECHAS (Ajuste fino) */
+            .swiper-button-next, .swiper-button-prev {
+                width: 55px !important;
+                height: 55px !important;
+                top: 50% !important;
+                transform: translateY(-50%);
+            }
+
+            /* 6. TEXTO (Seguro abajo) */
+            .producto-info {
+                bottom: 30px; /* Más separado del borde inferior */
+            }
+            
+            .producto-nombre {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="btn btn-light rounded-pill px-4 shadow btn-regresar fw-bold" style="color: #d926d5;">
+        <i class="bi bi-arrow-left"></i> Regresar
+    </a>
+    <h1 class="titulo-categoria">CARGANDO...</h1>
+    <img src="img/mancha-fondo.webp" class="blob-bg blob-grande" id="blob1" style="top: -10%; left: -10%;">
+    <img src="img/mancha-fondo.webp" class="blob-bg blob-mediano" id="blob2" style="bottom: -10%; right: -10%;">
+    <img src="img/mancha-fondo.webp" class="blob-bg blob-mediano" id="blob3" style="top: 20%; right: 10%;">
+    <img src="img/mancha-fondo.webp" class="blob-bg blob-grande" id="blob4" style="bottom: 10%; left: 10%;">
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper" id="swiper-wrapper"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+    <div class="producto-info">
+        <h2 id="nombre-producto" class="producto-nombre"></h2>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script> 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNiUdX80_2hRH_EHOsVxiZqFeP2PYXVGY",
+            authDomain: "manos-de-angel-1c692.firebaseapp.com",
+            projectId: "manos-de-angel-1c692",
+            storageBucket: "manos-de-angel-1c692.firebasestorage.app",
+            messagingSenderId: "102505109232",
+            appId: "1:102505109232:web:9c2af7b8845140d8ad9435",
+            measurementId: "G-LHZ40QXQ2N"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        const catParam = urlParams.get('categoria'); 
+        const CATEGORIA_A_MOSTRAR = catParam ? catParam : "Princesas"; 
+        
+        const prodParam = urlParams.get('producto');
+
+        document.querySelector('.titulo-categoria').innerText = CATEGORIA_A_MOSTRAR;
+
+        async function cargarCarrusel() {
+            const wrapper = document.getElementById('swiper-wrapper');
+            const tituloEl = document.getElementById('nombre-producto');
+            
+            const q = query(collection(db, "productos"), where("categoria", "==", CATEGORIA_A_MOSTRAR));
+            const querySnapshot = await getDocs(q);
+            const productos = [];
+
+            querySnapshot.forEach((doc) => productos.push(doc.data()));
+
+            if(productos.length === 0) {
+                tituloEl.innerText = "Próximamente...";
+                return;
+            }
+
+            let slideInicial = 0;
+
+            productos.forEach((prod, index) => {
+                if (prodParam && prod.nombre === prodParam) {
+                    slideInicial = index;
+                }
+
+                const slide = document.createElement('div');
+                slide.className = 'swiper-slide';
+                slide.setAttribute('data-name', prod.nombre);
+                
+                const content = document.createElement('div');
+                content.className = 'slide-content';
+
+                const imgMain = document.createElement('img');
+                imgMain.src = prod.imagenPrincipal;
+                imgMain.className = 'img-interactive img-main';
+                imgMain.onclick = () => resetearFoco(content);
+                content.appendChild(imgMain);
+
+                if(prod.galeria && prod.galeria[0]) {
+                    const imgLeft = document.createElement('img');
+                    imgLeft.src = prod.galeria[0];
+                    imgLeft.className = 'img-interactive img-side left';
+                    imgLeft.onclick = (e) => focarImagen(e, content);
+                    content.appendChild(imgLeft);
+                }
+
+                if(prod.galeria && prod.galeria[1]) {
+                    const imgRight = document.createElement('img');
+                    imgRight.src = prod.galeria[1];
+                    imgRight.className = 'img-interactive img-side right';
+                    imgRight.onclick = (e) => focarImagen(e, content);
+                    content.appendChild(imgRight);
+                }
+                
+                slide.appendChild(content);
+                wrapper.appendChild(slide);
+            });
+
+            const swiper = new Swiper(".mySwiper", {
+                initialSlide: slideInicial,
+                effect: "fade", 
+                fadeEffect: { crossFade: true },
+                speed: 600,
+                allowTouchMove: false,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                on: {
+                    slideChange: function () {
+                        actualizarInfo(this);
+                        moverManchasAleatoriamente();
+                        document.querySelectorAll('.focused').forEach(el => el.classList.remove('focused'));
+                        document.querySelectorAll('.dimmed').forEach(el => el.classList.remove('dimmed'));
+                    },
+                    init: function() {
+                        actualizarInfo(this);
+                        moverManchasAleatoriamente();
+                    }
+                }
+            });
+        }
+
+        window.focarImagen = function(event, container) {
+            event.stopPropagation();
+            if(event.target.classList.contains('focused')) {
+                resetearFoco(container);
+                return;
+            }
+            resetearFoco(container); 
+            const clickedImg = event.target;
+            const mainImg = container.querySelector('.img-main');
+            clickedImg.classList.add('focused');
+            if(mainImg) mainImg.classList.add('dimmed');
+        }
+
+        window.resetearFoco = function(container) {
+            container.querySelectorAll('.focused').forEach(img => img.classList.remove('focused'));
+            container.querySelectorAll('.dimmed').forEach(img => img.classList.remove('dimmed'));
+        }
+
+        function actualizarInfo(swiperInstance) {
+            const tituloEl = document.getElementById('nombre-producto');
+            const slidesReales = swiperInstance.slides;
+            const nombre = slidesReales[swiperInstance.activeIndex].getAttribute('data-name');
+            
+            tituloEl.style.opacity = 0;
+            tituloEl.style.transform = "translateY(20px)";
+            setTimeout(() => {
+                tituloEl.innerText = nombre;
+                tituloEl.style.opacity = 1;
+                tituloEl.style.transform = "translateY(0)";
+            }, 300);
+        }
+
+        function moverManchasAleatoriamente() {
+            const blobs = document.querySelectorAll('.blob-bg');
+            blobs.forEach(blob => {
+                const randomTop = Math.floor(Math.random() * 90) - 10;
+                const randomLeft = Math.floor(Math.random() * 90) - 10;
+                const randomScale = 0.8 + Math.random() * 0.4;
+                const randomRot = Math.floor(Math.random() * 360);
+                blob.style.top = randomTop + "%";
+                blob.style.left = randomLeft + "%";
+                blob.style.transform = `rotate(${randomRot}deg) scale(${randomScale})`;
+            });
+        }
+
+        cargarCarrusel();
+    </script>
+</body>
+
+</html>
+
+
+
+
