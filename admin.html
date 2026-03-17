@@ -129,8 +129,9 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module">
+        // 1. IMPORTAMOS 'updateDoc' de Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCNiUdX80_2hRH_EHOsVxiZqFeP2PYXVGY",
@@ -151,7 +152,15 @@
         const form = document.getElementById('form-productos');
         const listaProductos = document.getElementById('lista-productos');
         const barraProgreso = document.getElementById('barra-progreso-container');
+        const btnGuardar = document.getElementById('btn-guardar');
+        const inputImgPrincipal = document.getElementById('img-principal');
+        const tituloFormulario = document.querySelector('.admin-card h4');
         
+        // VARIABLES DE ESTADO PARA LA EDICIÓN
+        let editStatus = false;
+        let idProductoEditar = '';
+        let productosGlobales = {}; // Guardaremos los productos en memoria para leerlos rápido
+
         const categorias = [
             "Caricaturas", "Mascotas", "Lunetas", "Superhéroes", "Fútbol", 
             "Tamaños", "Princesas", "Halloween", "Unicornio", "Anime", 
@@ -169,7 +178,7 @@
             selectCat.appendChild(option);
         });
 
-        document.getElementById('img-principal').addEventListener('change', function(e) {
+        inputImgPrincipal.addEventListener('change', function(e) {
             const file = e.target.files[0];
             const container = document.getElementById('preview-principal');
             container.innerHTML = '';
@@ -203,7 +212,6 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const btnGuardar = document.getElementById('btn-guardar');
             btnGuardar.disabled = true;
             btnGuardar.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Guardando...';
             barraProgreso.classList.remove('d-none');
@@ -212,37 +220,69 @@
                 const nombre = document.getElementById('nombre').value.trim();
                 const categoria = document.getElementById('categoria').value;
                 
-                const filePrincipal = document.getElementById('img-principal').files[0];
+                const filePrincipal = inputImgPrincipal.files[0];
                 let urlPrincipal = "";
-                if (filePrincipal) urlPrincipal = await subirImagen(filePrincipal);
+
+                // LÓGICA DE IMAGEN: Si editamos y no hay foto nueva, conservamos la vieja
+                if (editStatus) {
+                    urlPrincipal = filePrincipal ? await subirImagen(filePrincipal) : productosGlobales[idProductoEditar].imagenPrincipal;
+                } else {
+                    if (filePrincipal) urlPrincipal = await subirImagen(filePrincipal);
+                }
 
                 const filesGaleria = document.getElementById('img-galeria').files;
-                let urlsGaleria = [];
+                let urlsGaleria = editStatus ? (productosGlobales[idProductoEditar].galeria || []) : [];
+                
+                // Si suben fotos nuevas a la galería, sobreescribimos las anteriores
                 if (filesGaleria.length > 0) {
+                    urlsGaleria = [];
                     for (let i = 0; i < filesGaleria.length; i++) {
                         const url = await subirImagen(filesGaleria[i]);
                         if(url) urlsGaleria.push(url);
                     }
                 }
 
-                await addDoc(collection(db, "productos"), {
-                    nombre: nombre,
-                    categoria: categoria,
-                    imagenPrincipal: urlPrincipal,
-                    galeria: urlsGaleria,
-                    fecha: serverTimestamp()
-                });
+                if (!editStatus) {
+                    // MODO CREAR
+                    await addDoc(collection(db, "productos"), {
+                        nombre: nombre,
+                        categoria: categoria,
+                        imagenPrincipal: urlPrincipal,
+                        galeria: urlsGaleria,
+                        fecha: serverTimestamp()
+                    });
+                    alert("¡Producto guardado!");
+                } else {
+                    // MODO EDITAR
+                    await updateDoc(doc(db, "productos", idProductoEditar), {
+                        nombre: nombre,
+                        categoria: categoria,
+                        imagenPrincipal: urlPrincipal,
+                        galeria: urlsGaleria
+                        // No actualizamos la fecha para que no pierda su orden original
+                    });
+                    alert("¡Producto actualizado!");
+                    
+                    // Restaurar el formulario a "Modo Crear"
+                    editStatus = false;
+                    idProductoEditar = '';
+                    tituloFormulario.innerText = "Nuevo Producto";
+                    tituloFormulario.style.color = "#d926d5";
+                    btnGuardar.innerHTML = '<i class="bi bi-cloud-arrow-up-fill"></i> GUARDAR PRODUCTO';
+                    btnGuardar.classList.remove('btn-warning');
+                    btnGuardar.classList.add('btn-upload');
+                    inputImgPrincipal.setAttribute('required', 'true');
+                }
 
-                alert("¡Producto guardado!");
                 form.reset();
                 document.getElementById('preview-principal').innerHTML = '';
 
             } catch (error) {
                 console.error("Error:", error);
-                alert("Error al guardar. Revisa la consola (F12) por si hay errores de permisos.");
+                alert("Error al guardar. Revisa la consola.");
             } finally {
                 btnGuardar.disabled = false;
-                btnGuardar.innerHTML = '<i class="bi bi-cloud-arrow-up-fill"></i> GUARDAR PRODUCTO';
+                if(!editStatus) btnGuardar.innerHTML = '<i class="bi bi-cloud-arrow-up-fill"></i> GUARDAR PRODUCTO';
                 barraProgreso.classList.add('d-none');
             }
         });
@@ -251,12 +291,17 @@
 
         onSnapshot(q, (snapshot) => {
             listaProductos.innerHTML = "";
+            productosGlobales = {}; // Vaciamos y llenamos con datos frescos
             document.getElementById('contador-productos').innerText = `${snapshot.docs.length} productos`;
 
-            snapshot.forEach((doc) => {
-                const prod = doc.data();
-                const id = doc.id;
+            snapshot.forEach((docSnap) => {
+                const prod = docSnap.data();
+                const id = docSnap.id;
+                
+                // Guardamos el producto en memoria para leerlo al editar
+                productosGlobales[id] = prod;
 
+                // AÑADIMOS EL BOTÓN DE EDITAR (Lápiz azul)
                 listaProductos.innerHTML += `
                     <div class="product-item p-3 d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center">
@@ -268,16 +313,52 @@
                                     `<span class="badge bg-info text-dark rounded-pill mt-1" style="font-size:0.7rem">+${prod.galeria.length} fotos extra</span>` : ''}
                             </div>
                         </div>
-                        <button class="btn btn-outline-danger btn-sm rounded-circle" onclick="window.eliminarProducto('${id}')">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
+                        <div>
+                            <button class="btn btn-outline-primary btn-sm rounded-circle me-1" onclick="window.cargarEdicion('${id}')">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm rounded-circle" onclick="window.eliminarProducto('${id}')">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
             });
         });
 
+        // NUEVA FUNCIÓN: CARGAR DATOS AL FORMULARIO
+        window.cargarEdicion = (id) => {
+            const prod = productosGlobales[id];
+            
+            document.getElementById('nombre').value = prod.nombre;
+            document.getElementById('categoria').value = prod.categoria;
+            
+            // Mostrar imagen actual
+            document.getElementById('preview-principal').innerHTML = `
+                <img src="${prod.imagenPrincipal}" style="height: 100px; border-radius: 10px;">
+                <p class="small text-muted mt-1 mb-0">Imagen actual. Sube otra si deseas cambiarla.</p>
+            `;
+            
+            // Quitamos el required para que deje guardar si no cambia la foto
+            inputImgPrincipal.removeAttribute('required');
+
+            editStatus = true;
+            idProductoEditar = id;
+
+            // Cambiar aspecto del formulario
+            tituloFormulario.innerText = "Editando: " + prod.nombre;
+            tituloFormulario.style.color = "#ff9800"; // Naranja de edición
+            
+            btnGuardar.innerHTML = '<i class="bi bi-pencil-square"></i> ACTUALIZAR PRODUCTO';
+            btnGuardar.classList.remove('btn-upload');
+            btnGuardar.classList.add('btn-warning');
+            
+            // Subir la vista hacia el formulario
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
         window.eliminarProducto = async (id) => {
-            if(confirm("¿Borrar producto?")) {
+            if(confirm("¿Seguro que quieres borrar este producto?")) {
                 await deleteDoc(doc(db, "productos", id));
             }
         };
