@@ -1,4 +1,4 @@
-const CACHE_NAME = 'manos-de-angel-v1'; // Cambié a v2 para forzar actualización
+const CACHE_NAME = 'manos-de-angel-v2';
 
 const urlsToCache = [
   './',
